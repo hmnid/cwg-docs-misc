@@ -1,16 +1,20 @@
-# Why we sometimes crash when loading characters
+# Game sometimes crashes when we load characters
 
-Inspired by today's community stress test to nail down crashes when people are loading.
-
-We tried to provoke a crash by loading simultaneously while others were hitting mobs. We managed to reproduce crashes and acquired logs and dumps. I was lucky enough to crash myself. Here is what I managed to come up with.
+During today's community stress test, we tried loading simultaneously while others were hitting mobs. We managed to crash the game and collect logs and dumps. I was lucky enough to crash myself. Here is what I found.
 
 ## What is going on?
 
 There is a short window between the character-selection screen closing and your loaded hero being focused. If a unit is created during that window, your game can crash.
 
-**Any unit.** A respawning mob, somebody's pet, even a hero preview in the character roster.
+Things that create units include:
+- Loading a hero.
+- Respawning mobs or spawning raid bosses.
+- Summoning or replacing pets.
+- Applying bag cosmetics.
+- Using abilities implemented with dummy units.
+- Browsing your hero roster. Where do you think the preview hero model comes from?
 
-The investigation points to a WC3 engine bug in how the native UI handles this transition. I also made a small standalone map that reproduces the crash without CWG's loading system. More on that below.
+The investigation points to a WC3 engine bug. I've managed to made a small standalone map that reproduces is without CWG's loading system.
 
 Now some things make sense:
 
@@ -18,30 +22,23 @@ Now some things make sense:
 - Why do people often crash when somebody is late for their turn to load? Everyone else is already farming at this point.
 - Why does it happen right when you are about to finish loading? That is when the character-selection screen gives way to the normal UI.
 
-Note: this explains the crash investigated here, not necessarily every crash people have ever had while loading.
+This explains my particular crash, not necessarily every loading crash.
 
-## What can we do while the fix is on the way?
+## Workaround
 
-**Load one at a time. Avoid spawning units until everyone is loaded.**
+**Load one at a time. Avoid actions that spawn units until everyone is loaded.**
 
-Sounds simple, but this actually involves a lot of things:
+1. Do not touch anything until your turn to load. Feel free to chat though.
+2. Select your hero and load.
+3. Wait until everyone is loaded before doing anything else.
 
-- Loading in parallel.
-- Respawning mobs or spawning raid bosses.
-- Summoning or replacing pets.
-- Applying bag cosmetics
-- Using abilities that implemented with dummy units.
-- Even merely browsing your hero roster. Where do you think the rendered hero model comes from?
+Selecting any unit beforehand prevents the crash in my standalone test. But I don't see a normal way to do that from CWG's selection screen.
 
-So the practical advice is:
+## Credits
 
-1. Do not touch anything until it is your turn to load. Feel free to chat though.
-2. When your turn comes, select your hero and start loading.
-3. Do not touch anything until everyone is loaded.
-
-This should help avoid this particular trigger. It is not a promise that nothing else can crash the game.
-
-If you find a clever way to make the game select any unit while you are still at the character-selection screen, that might help too. Selecting a unit first prevents the crash in my standalone test. But I don't see a normal way to do that from CWG's selection screen.
+- `@themidlane` for encouraging us to investigate it and for CWG.
+- `@getbasiled` for organizing the test session.
+- `@taol`, `@nayers`, `@mateusz7167`, `@chopin`, `@hmnid`, `@retrofool`, `@numb2547` for testing.
 
 ## Want to try crashing it yourself?
 
@@ -67,12 +64,6 @@ Now restart the map and try this:
 Nothing bad happens in my tests. Same commands, but selecting a unit first makes the difference.
 
 If you try it, please include your exact WC3 version and build when reporting the result.
-
-## Credits
-
-- `@themidlane` for encouraging us to investigate it and for our great CWG experience overall.
-- `@getbasiled` for organizing the test session.
-- `@taol`, `@nayers`, `@mateusz7167`, `@chopin`, `@hmnid`, `@retrofool`, and `@numb2547` for performing the tests.
 
 ---
 
