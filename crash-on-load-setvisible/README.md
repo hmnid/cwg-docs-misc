@@ -207,6 +207,8 @@ endfunction
 
 There is no CWG save data involved here. Just showing native buttons and creating a footman. That is why I consider this an engine bug rather than a broken character save.
 
+You see, this code doesn't seem to do anything wrong. Both `ORIGIN_FRAME_COMMAND_BUTTON` and `BlzFrameSetVisible` are exposed as native API. How in the world could you figure out that this particular sequence causes the game executable to crash? The game code should check is `button->commandData` initialized before accessing it's fields.
+
 ## How I got to the bottom of it
 
 The boring part, for anyone who wants to follow the investigation or check my work.
