@@ -14,7 +14,7 @@ Things that create units include:
 - Using abilities implemented with dummy units.
 - Browsing your hero roster. Where do you think the preview hero model comes from?
 
-The investigation points to a WC3 engine bug. I've managed to made a small standalone map that reproduces is without CWG's loading system.
+The investigation points to a WC3 engine bug. I made a standalone map that reproduces it.
 
 Now some things make sense:
 
