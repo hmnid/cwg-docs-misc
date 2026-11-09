@@ -42,7 +42,7 @@ Selecting any unit beforehand prevents the crash in my standalone test. But I do
 
 ## Want to try crashing it yourself?
 
-Here is the standalone map: [HideAndSpawn.w3x](./HideAndSpawn.w3x).
+Here is the minimap reproducible example map: [HideAndSpawn.w3x](./HideAndSpawn.w3x).
 
 It has a single footman already spawned and three chat commands: `-showcmd`, `-hidecmd`, and `-spawnunit`.
 
@@ -209,9 +209,13 @@ There is no CWG save data involved here. Just showing native buttons and creatin
 
 You see, this code doesn't seem to do anything wrong. Both `ORIGIN_FRAME_COMMAND_BUTTON` and `BlzFrameSetVisible` are exposed as native API. How in the world could you figure out that this particular sequence causes the game executable to crash? The game code should check is `button->commandData` initialized before accessing it's fields.
 
+### Is LUA safe?
+
+Not really. It still relies on same natives, hence the crash is reproducible with lua in the very same manner. See [lua-example](./lua-example)
+
 ## How I got to the bottom of it
 
-The boring part, for anyone who wants to follow the investigation or check my work.
+For anyone who wants to follow the investigation or check my work.
 
 The key idea: `War3.dmp` lets us work backwards from the crash and figure out what the native code was doing.
 
@@ -249,10 +253,10 @@ Try it yourself: [just the function where the crash occurs](./find-visible-butto
 
 This sure takes a lot of time. Knowledge of the C++ runtime and the Portable Executable format helps too.
 
-AI agents were a big help here, especially with assembly and pseudocode. But you still have to check what they tell you against the actual instructions and process state.
+AI agents were a big help here, especially with assembly and pseudocode.
 
 ### Fill in what the dump is missing
 
 WC3 gives us a minidump, not a full process dump. Some memory and code simply are not there.
 
-Matching executable images can supply missing code. Inspecting a running WC3 process of the same build can also help with code and object layouts. It won't magically recover the crashed process's missing state, but it can give you enough context to keep going.
+Matching executable images can supply missing code. Inspecting a running WC3 process of the same build can also help with code and object layouts. It won't magically recover the crashed process's missing state, but it can give you enough context to keep going. For example, you can recover code missing from the dump. You'll just have to handle ASLR
