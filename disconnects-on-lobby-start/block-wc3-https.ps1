@@ -38,6 +38,7 @@ function Invoke-Wc3HttpsBlock {
         Add-Wc3HttpsBlock -Targets $targets -Group $group -Expires $expires
         $remaining = [Math]::Ceiling(($expires - (Get-Date)).TotalSeconds)
         if ($remaining -gt 0) {
+            Write-Host "Blocking rules applied for $($targets.Count) target(s). Sleeping for $remaining seconds until cleanup at $($expires.ToString('HH:mm:ss')). You can return to CWG." -ForegroundColor Green
             Start-Sleep -Seconds $remaining
         }
     } finally {

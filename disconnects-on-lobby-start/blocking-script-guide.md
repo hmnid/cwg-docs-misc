@@ -12,12 +12,12 @@ My investigation has been on WC3 **3.0.1.24371**. Results on other builds or con
 
 ## Read this before trying it
 
-- **You may disconnect, lose lobby/service access, or interrupt your game.** Start with a solo or private test, not a valuable session. Warn other participants if applicable.
-- Close other Warcraft III instances first. The firewall rules apply to the executable, **not just one process**.
+- **You may disconnect, lose lobby/service access, or interrupt your game.** You can try it in solo, private, or public CWG games; just keep the possibility of an interrupted session in mind.
+- You don't need to close other Warcraft III instances just because they're running. In my experience, games already underway continue normally; instances still in menus or lobbies that haven't started will lose their Battle.net connection. The rules apply to the executable, **not just one process**, so keep that in mind if you're preparing another lobby.
 - Administrator rights are required because the script changes Windows Firewall rules and registers a cleanup task.
 - Read the script or have someone you trust review it. Do not run an unfamiliar downloaded script merely because this guide says to.
 - Automatic cleanup aims for **three minutes after script startup**, but that is not a guaranteed expiration. Sleep, shutdown, Task Scheduler problems, or errors can delay removal. Keep the manual undo command below available.
-- Do not disable your firewall, antivirus, or other security software to run this experiment.
+- There's no need to disable your firewall, antivirus, or other security software. Leave them enabled—the script uses Windows Firewall to apply the temporary rules.
 
 ## What the script changes
 
@@ -38,13 +38,14 @@ The filename says “HTTPS,” but port 443 alone does not establish the applica
 - Windows with Windows Firewall, Windows PowerShell, and the built-in `NetSecurity`, `NetTCPIP`, and `ScheduledTasks` modules available.
 - A running Task Scheduler service.
 - Permission to run an elevated PowerShell window and change local firewall rules. Do not override an administrator's restrictions on a managed computer.
+- PowerShell must permit the script to run. Depending on your execution policy, Windows may block an unsigned downloaded script. After reviewing and trusting the file, you may need to remove its download mark with `Unblock-File`; see [the preparation steps below](#1-prepare-before-starting-cwg). This does not change execution policy or override restrictions requiring signed scripts.
 
 ## How to try it
 
 ### 1. Prepare before starting CWG
 
 1. Save `block-wc3-https.ps1` in a folder you can find.
-2. Close extra Warcraft III instances.
+2. Check your other Warcraft III instances, if any. Games already underway should be fine; expect instances without a started game to disconnect from Battle.net.
 3. Open **Windows PowerShell → Run as administrator**.
 4. Change to the script's folder, for example:
 
@@ -64,7 +65,7 @@ This does not override policies requiring signed scripts. If policy still preven
 
 ### 2. Run once during map loading
 
-1. Create a solo CWG lobby, or join a private CWG test with players who know about the experiment.
+1. Host or join a CWG lobby as usual—solo, private, or public.
 2. Start CWG normally.
 3. While CWG is loading, switch to the prepared PowerShell window and run:
 
@@ -84,7 +85,10 @@ The script prints a cleanup deadline, then lines such as:
 ```text
 Cleanup armed for ...: Pi-WC3-HTTPS-Cleanup-...
 Blocked ...Warcraft III.exe -> ...:443
+Blocking rules applied for ... target(s). Sleeping for ... seconds until cleanup at ... You can return to CWG.
 ```
+
+The green “Blocking rules applied” message confirms that rule creation finished and the script is entering its sleep stage. You can leave that window alone and return to CWG while it waits for cleanup.
 
 Normally, around three minutes after startup, its foreground cleanup removes that run's rules. A scheduled SYSTEM task is registered **before any firewall changes** as a fallback if the terminal closes; startup and missed-task handling also provide recovery opportunities. Cleanup can still be delayed or fail.
 

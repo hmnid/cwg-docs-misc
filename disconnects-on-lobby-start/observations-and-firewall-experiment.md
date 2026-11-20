@@ -15,6 +15,6 @@ I've had successful CWG games while temporarily blocking selected Warcraft III t
 
 ## Trying the experiment
 
-Use the [standalone player guide](blocking-script-guide.md) with `block-wc3-https.ps1`. Start with a solo/private test, close other WC3 instances, and verify that the temporary rules are removed afterward.
+Use the [standalone player guide](blocking-script-guide.md) with `block-wc3-https.ps1`. You can try it in solo, private, or public CWG games; verify that the temporary rules are removed afterward. Other games already underway should continue normally; expect instances still in menus or unstarted lobbies to lose their Battle.net connection.
 
 If you try it, let me know your WC3 and CWG versions, whether you hosted or joined, whether blocking rules were actually created, and whether you got dropped as usual. A brief description is enough; no low-level diagnostic material is needed.
