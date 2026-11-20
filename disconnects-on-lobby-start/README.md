@@ -1,10 +1,10 @@
-# Disconnects on lobby start
+# CWG disconnects after loading
 
-Some players finish loading a custom map, then get sent to the score screen immediately or about **5–7 seconds later**, sometimes even in a solo lobby. The cause is not confirmed.
+When I start CWG, I sometimes get sent to the score screen as soon as loading finishes, or about **5–7 seconds into character selection**—even in a solo lobby. I haven't confirmed the cause yet.
 
 - **[Player guide: temporary traffic blocking](blocking-script-guide.md)** — instructions, precautions, cleanup, and manual undo.
-- [Reported symptoms and observations](observations-and-firewall-experiment.md).
+- [My symptoms and observations](observations-and-firewall-experiment.md).
 
-To share the experiment, send `blocking-script-guide.md` and `block-wc3-https.ps1` together. The script is unchanged.
+If you have the same problem with CWG, the guide explains how to try the workaround and let me know what happens. Share `blocking-script-guide.md` and `block-wc3-https.ps1` together.
 
 This is an experimental workaround, not a confirmed fix. Its executable-scoped rules can affect multiple WC3 instances; read the guide before running it.

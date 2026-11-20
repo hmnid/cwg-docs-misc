@@ -1,14 +1,14 @@
-# Experimental WC3 disconnect workaround: temporary traffic blocking
+# CWG: trying a workaround for disconnects after loading
 
 Share this guide together with **`block-wc3-https.ps1`**. No other project files are needed.
 
 ## What is this for?
 
-Some players finish loading a custom map, then get sent to the score screen immediately or several seconds later—even in a solo lobby.
+When I start CWG, the map sometimes finishes loading only to send me straight to the score screen. Other times I reach character selection, then get dropped about **5–7 seconds later**. It can happen even when I'm the only player.
 
-This script tests whether temporarily interrupting some of Warcraft III's service connections changes that behavior. The original reporter has observed successful games while using it, but **it is not a confirmed fix**. Successful attempts do not prove what caused previous disconnects.
+I've been experimenting with temporarily blocking some Warcraft III service traffic during loading, and I've had successful CWG games while using this script. **I don't know yet whether it reliably prevents the disconnects.** If you have the same problem, this guide explains how to try it and share your results.
 
-The investigation involved WC3 **3.0.1.24371**. Behavior on other builds or configurations is not established.
+My investigation has been on WC3 **3.0.1.24371**. Results on other builds or configurations may differ.
 
 ## Read this before trying it
 
@@ -41,7 +41,7 @@ The filename says “HTTPS,” but port 443 alone does not establish the applica
 
 ## How to try it
 
-### 1. Prepare before starting the map
+### 1. Prepare before starting CWG
 
 1. Save `block-wc3-https.ps1` in a folder you can find.
 2. Close extra Warcraft III instances.
@@ -64,16 +64,16 @@ This does not override policies requiring signed scripts. If policy still preven
 
 ### 2. Run once during map loading
 
-1. Host or join a solo/private test lobby normally.
-2. Start the map.
-3. While the loading screen is showing, switch to the prepared PowerShell window and run:
+1. Create a solo CWG lobby, or join a private CWG test with players who know about the experiment.
+2. Start CWG normally.
+3. While CWG is loading, switch to the prepared PowerShell window and run:
 
    ```powershell
    .\block-wc3-https.ps1
    ```
 
 4. Return focus to Warcraft III immediately. The script can remain running in the background.
-5. Observe whether loading completes and whether you stay in the game beyond the usual disconnect point.
+5. Check whether you reach character selection and stay in CWG beyond the point where you would usually get dropped.
 
 Do not repeatedly launch it during the same attempt. Each invocation creates its own independent rules and cleanup task.
 
@@ -125,13 +125,13 @@ Removing rules permits traffic again; it cannot guarantee that an already discon
 | Red error after rules started appearing | Do not assume everything was undone. Run manual undo and verify. |
 | Rules remain after three minutes, sleep, or reboot | Use manual undo and verify removal. Do not rerun the script to try to clean up. |
 
-## What to report
+## Let me know how it went
 
-A short report is enough:
+If you try this with CWG, send me a short report:
 
 ```text
 WC3 version:
-Map/version:
+CWG version:
 Host or joining player; solo or multiplayer:
 Usual symptom:
 When the script was launched:
